@@ -15,14 +15,16 @@ export interface Probe {
 export interface Target {
   id: string;
   name: string;
-  target_type: 'host' | 'router' | 'switch' | 'server';
+  type: string;
   address: string;
   port?: number;
   enabled: boolean;
+  status: 'up' | 'down' | 'degraded' | 'unknown';
+  last_check?: string;
   description: string;
   created_at: string;
   updated_at: string;
-  metadata: Record<string, any>;
+  metadata?: Record<string, any>;
 }
 
 export interface Monitor {

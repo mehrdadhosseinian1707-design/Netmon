@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import apiService from '../services/api';
 import type { DashboardStats } from '../types';
 import './Dashboard.css';
 
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -54,9 +54,46 @@ type Measurement struct {
 	MonitorID    uuid.UUID              `json:"monitor_id" db:"monitor_id"`
 	MonitorType  string                 `json:"monitor_type" db:"monitor_type"`
 	Success      bool                   `json:"success" db:"success"`
+
+	// Basic network metrics
 	LatencyMs    *float64               `json:"latency_ms,omitempty" db:"latency_ms"`
 	PacketLoss   *float64               `json:"packet_loss,omitempty" db:"packet_loss"`
 	JitterMs     *float64               `json:"jitter_ms,omitempty" db:"jitter_ms"`
+
+	// Speed and throughput metrics (Mbps)
+	DownloadSpeedMbps *float64           `json:"download_speed_mbps,omitempty" db:"download_speed_mbps"`
+	UploadSpeedMbps   *float64           `json:"upload_speed_mbps,omitempty" db:"upload_speed_mbps"`
+	TCPThroughputMbps *float64           `json:"tcp_throughput_mbps,omitempty" db:"tcp_throughput_mbps"`
+	UDPThroughputMbps *float64           `json:"udp_throughput_mbps,omitempty" db:"udp_throughput_mbps"`
+
+	// DNS metrics
+	DNSLatencyMs      *float64           `json:"dns_latency_ms,omitempty" db:"dns_latency_ms"`
+
+	// TCP metrics
+	TCPConnectTimeMs  *float64           `json:"tcp_connect_time_ms,omitempty" db:"tcp_connect_time_ms"`
+	TLSHandshakeTimeMs *float64          `json:"tls_handshake_time_ms,omitempty" db:"tls_handshake_time_ms"`
+	TCPRetransmissions *int              `json:"tcp_retransmissions,omitempty" db:"tcp_retransmissions"`
+
+	// HTTP metrics
+	HTTPTTFBMs        *float64           `json:"http_ttfb_ms,omitempty" db:"http_ttfb_ms"`
+	HTTPTotalTimeMs   *float64           `json:"http_total_time_ms,omitempty" db:"http_total_time_ms"`
+
+	// Path metrics
+	MTU               *int               `json:"mtu,omitempty" db:"mtu"`
+	HopCount          *int               `json:"hop_count,omitempty" db:"hop_count"`
+	RouteChanges      *int               `json:"route_changes,omitempty" db:"route_changes"`
+	ASPath            *string            `json:"as_path,omitempty" db:"as_path"`
+
+	// Interface metrics
+	RXErrors          *int64             `json:"rx_errors,omitempty" db:"rx_errors"`
+	TXErrors          *int64             `json:"tx_errors,omitempty" db:"tx_errors"`
+	RXDrops           *int64             `json:"rx_drops,omitempty" db:"rx_drops"`
+	TXDrops           *int64             `json:"tx_drops,omitempty" db:"tx_drops"`
+
+	// Connectivity
+	IPv4Connectivity  *bool              `json:"ipv4_connectivity,omitempty" db:"ipv4_connectivity"`
+	IPv6Connectivity  *bool              `json:"ipv6_connectivity,omitempty" db:"ipv6_connectivity"`
+
 	ErrorMessage string                 `json:"error_message,omitempty" db:"error_message"`
 	Metadata     map[string]interface{} `json:"metadata" db:"metadata"`
 }
@@ -100,14 +137,17 @@ const (
 	TargetTypeSwitch = "switch"
 	TargetTypeServer = "server"
 
-	MonitorTypeICMP       = "icmp"
-	MonitorTypeTCP        = "tcp"
-	MonitorTypeUDP        = "udp"
-	MonitorTypeDNS        = "dns"
-	MonitorTypeHTTP       = "http"
-	MonitorTypeHTTPS      = "https"
-	MonitorTypeTraceroute = "traceroute"
-	MonitorTypeSNMP       = "snmp"
+	MonitorTypeICMP         = "icmp"
+	MonitorTypeTCP          = "tcp"
+	MonitorTypeUDP          = "udp"
+	MonitorTypeDNS          = "dns"
+	MonitorTypeHTTP         = "http"
+	MonitorTypeHTTPS        = "https"
+	MonitorTypeTraceroute   = "traceroute"
+	MonitorTypeSNMP         = "snmp"
+	MonitorTypeBandwidth    = "bandwidth"
+	MonitorTypeConnectivity = "connectivity"
+	MonitorTypeInterface    = "interface"
 
 	AlertSeverityInfo     = "info"
 	AlertSeverityWarning  = "warning"

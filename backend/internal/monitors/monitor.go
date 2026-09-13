@@ -31,6 +31,9 @@ func NewMonitorFactory() *MonitorFactory {
 	factory.Register(models.MonitorTypeTCP, func(config map[string]interface{}) (Monitor, error) {
 		return NewTCPMonitor(config)
 	})
+	factory.Register(models.MonitorTypeUDP, func(config map[string]interface{}) (Monitor, error) {
+		return NewUDPMonitor(config)
+	})
 	factory.Register(models.MonitorTypeDNS, func(config map[string]interface{}) (Monitor, error) {
 		return NewDNSMonitor(config)
 	})
@@ -49,6 +52,15 @@ func NewMonitorFactory() *MonitorFactory {
 	})
 	factory.Register(models.MonitorTypeSNMP, func(config map[string]interface{}) (Monitor, error) {
 		return NewSNMPMonitor(config)
+	})
+	factory.Register(models.MonitorTypeBandwidth, func(config map[string]interface{}) (Monitor, error) {
+		return NewBandwidthMonitor(config)
+	})
+	factory.Register(models.MonitorTypeConnectivity, func(config map[string]interface{}) (Monitor, error) {
+		return NewConnectivityMonitor(config)
+	})
+	factory.Register(models.MonitorTypeInterface, func(config map[string]interface{}) (Monitor, error) {
+		return NewInterfaceMonitor(config)
 	})
 
 	return factory

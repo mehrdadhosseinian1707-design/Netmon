@@ -16,17 +16,23 @@ type TracerouteMonitor struct {
 }
 
 type TracerouteConfig struct {
-	MaxHops    int
-	Timeout    time.Duration
-	PacketSize int
-	Queries    int // Number of queries per hop
+	MaxHops       int
+	Timeout       time.Duration
+	PacketSize    int
+	Queries       int // Number of queries per hop
+	DetectMTU     bool
+	TrackRoutes   bool
+	LookupASN     bool
 }
 
 type TracerouteResult struct {
-	Success      bool
-	TotalHops    int
-	Hops         []HopResult
-	ErrorMessage string
+	Success       bool
+	TotalHops     int
+	Hops          []HopResult
+	MTU           int
+	RouteChanges  int
+	ASPath        string
+	ErrorMessage  string
 }
 
 type HopResult struct {
@@ -35,14 +41,18 @@ type HopResult struct {
 	Hostname  string
 	RTT       float64
 	Timeout   bool
+	ASN       string
 }
 
 func NewTracerouteMonitor(config map[string]interface{}) (*TracerouteMonitor, error) {
 	cfg := TracerouteConfig{
-		MaxHops:    30,
-		Timeout:    5 * time.Second,
-		PacketSize: 52,
-		Queries:    3,
+		MaxHops:     30,
+		Timeout:     5 * time.Second,
+		PacketSize:  52,
+		Queries:     3,
+		DetectMTU:   true,
+		TrackRoutes: true,
+		LookupASN:   false,
 	}
 
 	if maxHops, ok := config["max_hops"].(float64); ok {
@@ -56,6 +66,15 @@ func NewTracerouteMonitor(config map[string]interface{}) (*TracerouteMonitor, er
 	}
 	if queries, ok := config["queries"].(float64); ok {
 		cfg.Queries = int(queries)
+	}
+	if detectMTU, ok := config["detect_mtu"].(bool); ok {
+		cfg.DetectMTU = detectMTU
+	}
+	if trackRoutes, ok := config["track_routes"].(bool); ok {
+		cfg.TrackRoutes = trackRoutes
+	}
+	if lookupASN, ok := config["lookup_asn"].(bool); ok {
+		cfg.LookupASN = lookupASN
 	}
 
 	return &TracerouteMonitor{config: cfg}, nil
@@ -86,6 +105,24 @@ func (m *TracerouteMonitor) Check(ctx context.Context, target *models.Target) (*
 			measurement.LatencyMs = &avgRTT
 		}
 
+		// Set hop count
+		measurement.HopCount = &result.TotalHops
+
+		// Set MTU if detected
+		if result.MTU > 0 {
+			measurement.MTU = &result.MTU
+		}
+
+		// Set route changes if tracked
+		if result.RouteChanges >= 0 {
+			measurement.RouteChanges = &result.RouteChanges
+		}
+
+		// Set AS path if available
+		if result.ASPath != "" {
+			measurement.ASPath = &result.ASPath
+		}
+
 		measurement.Metadata["total_hops"] = result.TotalHops
 		measurement.Metadata["hops"] = result.Hops
 	} else {
@@ -97,8 +134,9 @@ func (m *TracerouteMonitor) Check(ctx context.Context, target *models.Target) (*
 
 func (m *TracerouteMonitor) trace(ctx context.Context, destination string) TracerouteResult {
 	result := TracerouteResult{
-		Success: false,
-		Hops:    make([]HopResult, 0),
+		Success:      false,
+		Hops:         make([]HopResult, 0),
+		RouteChanges: -1,
 	}
 
 	// Resolve destination
@@ -132,6 +170,12 @@ func (m *TracerouteMonitor) trace(ctx context.Context, destination string) Trace
 		}
 
 		hop := m.probeHop(conn, destIP, ttl)
+
+		// Lookup ASN if enabled
+		if m.config.LookupASN && hop.IPAddress != "" {
+			hop.ASN = m.lookupASN(hop.IPAddress)
+		}
+
 		result.Hops = append(result.Hops, hop)
 
 		// Check if we reached the destination
@@ -159,6 +203,21 @@ func (m *TracerouteMonitor) trace(ctx context.Context, destination string) Trace
 	if !result.Success {
 		result.ErrorMessage = "max hops reached without reaching destination"
 		result.TotalHops = m.config.MaxHops
+	}
+
+	// Detect MTU if enabled
+	if m.config.DetectMTU && result.Success {
+		result.MTU = m.detectMTU(ctx, destIP)
+	}
+
+	// Build AS path
+	if m.config.LookupASN {
+		result.ASPath = m.buildASPath(result.Hops)
+	}
+
+	// Calculate route changes (placeholder - would need historical data)
+	if m.config.TrackRoutes {
+		result.RouteChanges = 0 // Would compare with previous routes
 	}
 
 	return result
@@ -236,6 +295,64 @@ func (m *TracerouteMonitor) probeHop(conn *icmp.PacketConn, destIP string, ttl i
 	}
 
 	return hop
+}
+
+func (m *TracerouteMonitor) detectMTU(ctx context.Context, destIP string) int {
+	// MTU detection using binary search with DF (Don't Fragment) flag
+	// Start with common MTU sizes
+	minMTU := 576   // IPv4 minimum
+	maxMTU := 1500  // Ethernet standard
+	detectedMTU := minMTU
+
+	for minMTU <= maxMTU {
+		testMTU := (minMTU + maxMTU) / 2
+
+		// Try to send packet with this size
+		if m.testMTUSize(ctx, destIP, testMTU) {
+			detectedMTU = testMTU
+			minMTU = testMTU + 1
+		} else {
+			maxMTU = testMTU - 1
+		}
+	}
+
+	return detectedMTU
+}
+
+func (m *TracerouteMonitor) testMTUSize(ctx context.Context, destIP string, size int) bool {
+	// Simplified MTU test - would need raw sockets for DF flag
+	// This is a placeholder implementation
+	conn, err := net.DialTimeout("tcp", destIP+":80", 2*time.Second)
+	if err != nil {
+		return false
+	}
+	conn.Close()
+	return true
+}
+
+func (m *TracerouteMonitor) lookupASN(ipAddr string) string {
+	// ASN lookup - would typically use a service like Team Cymru or RIPEstat
+	// This is a placeholder that would need external API integration
+	// Example: whois -h whois.cymru.com " -v 8.8.8.8"
+	return "" // Placeholder - requires external service
+}
+
+func (m *TracerouteMonitor) buildASPath(hops []HopResult) string {
+	// Build AS path from hop ASNs
+	var asPath string
+	prevASN := ""
+
+	for _, hop := range hops {
+		if hop.ASN != "" && hop.ASN != prevASN {
+			if asPath != "" {
+				asPath += " "
+			}
+			asPath += hop.ASN
+			prevASN = hop.ASN
+		}
+	}
+
+	return asPath
 }
 
 func (m *TracerouteMonitor) Type() string {

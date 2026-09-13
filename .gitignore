@@ -1,6 +1,10 @@
 # Backend
 backend/bin/
 backend/vendor/
+*.exe
+*.exe~
+*.pid
+go.work
 
 # Frontend
 frontend/node_modules/
