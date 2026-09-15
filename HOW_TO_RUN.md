@@ -1,192 +1,323 @@
-# NetMon - How to Run the Application
+# NetMon - Quick Start Guide
 
-## System Requirements ✅
-- ✅ Go 1.27.1 (installed)
-- ✅ Node.js 24.18.0 (installed)
-- ✅ npm 11.16.0 (installed)
-- ✅ Docker 29.7.2 (installed)
+## Prerequisites
+
+Before you start, make sure you have:
+
+1. **Docker Desktop** - [Download here](https://www.docker.com/products/docker-desktop/)
+   - ⚠️ **IMPORTANT**: Docker Desktop MUST be running before starting NetMon
+   - After installing, launch Docker Desktop and wait for it to fully start
+
+2. **Go 1.24+** - [Download here](https://go.dev/dl/)
+
+3. **Node.js 16+** - [Download here](https://nodejs.org/)
 
 ---
 
-## Quick Start (3 Steps)
+## Method 1: Quick Start (Recommended - Windows)
 
-### Step 1: Start Database (Docker)
+### Step 1: Start Docker Desktop
+1. Open Docker Desktop application
+2. Wait until you see "Docker Desktop is running" in the system tray
+3. Verify by opening Command Prompt and running:
+   ```bash
+   docker ps
+   ```
+   You should see a table header (even if no containers are running yet)
+
+### Step 2: Run Everything at Once
+```bash
+cd D:\netmon
+start-all.bat
+```
+
+This script will:
+- ✅ Check if Docker Desktop is running
+- ✅ Start PostgreSQL + Redis containers
+- ✅ Start the backend server (with automatic migrations)
+- ✅ Start the frontend development server
+- ✅ Open your browser to http://localhost:3000
+
+**Note:** First time setup takes 2-3 minutes while npm installs dependencies.
+
+### To Stop All Services:
+```bash
+stop-all.bat
+```
+
+---
+
+## Method 2: Manual Start (Step-by-Step)
+
+### Step 1: Start Docker Desktop
+⚠️ **CRITICAL**: Open Docker Desktop application and wait for it to be fully running
+
+**Verify Docker is running:**
+```bash
+docker --version
+docker ps
+```
+
+### Step 2: Start Database (PostgreSQL + Redis)
 ```bash
 cd D:\netmon
 docker-compose up -d
 ```
-**What this does:** Starts PostgreSQL + TimescaleDB and Redis in Docker containers
 
-**Verify it's running:**
+**What this does:**
+- Starts PostgreSQL with TimescaleDB extension
+- Starts Redis cache
+- Creates persistent volumes for data storage
+
+**Verify containers are running:**
 ```bash
 docker ps
 ```
-You should see containers: `netmon-postgres` and `netmon-redis`
+You should see:
+- `netmon-postgres` (port 5432)
+- `netmon-redis` (port 6379)
+
+**Check container logs if needed:**
+```bash
+docker logs netmon-postgres
+docker logs netmon-redis
+```
 
 ---
 
-### Step 2: Start Backend Server
+### Step 3: Start Backend Server
+Open a **NEW terminal window** and run:
 ```bash
 cd D:\netmon\backend
 go run cmd/server/main.go
 ```
+
 **What this does:**
-- Runs database migrations automatically
-- Starts REST API on http://localhost:8080
-- Starts monitoring scheduler
+- Connects to PostgreSQL database
+- Runs database migrations automatically (creates all tables)
+- Starts REST API server on http://localhost:8080
+- Initializes monitoring scheduler
 - Ready to accept probe connections
 
-**You'll see:**
+**Expected output:**
 ```
-Starting NetMon Server...
-Database connection established
-Running migrations...
-Server listening on :8080
+{"level":"info","msg":"starting netmon server","version":"0.2.0","mode":"release"}
+{"level":"info","msg":"connected to database"}
+{"level":"info","msg":"running database migrations"}
+Applying migration 001: initial_schema
+{"level":"info","msg":"migrations completed successfully"}
+{"level":"info","msg":"starting HTTP server","addr":"0.0.0.0:8080"}
 ```
 
-**Keep this terminal open!**
+**⚠️ Keep this terminal window open!**
 
 ---
 
-### Step 3: Start Frontend Dashboard
-Open a **NEW terminal** and run:
+### Step 4: Start Frontend Dashboard
+Open **ANOTHER NEW terminal window** and run:
 ```bash
 cd D:\netmon\frontend
-npm install    # Only needed first time (takes 2-3 minutes)
+
+# First time only (installs dependencies - takes 2-3 minutes)
+npm install
+
+# Start development server
 npm start
 ```
+
 **What this does:**
 - Installs React dependencies (first time only)
 - Starts development server on http://localhost:3000
 - Opens browser automatically
+- Hot-reloads on code changes
 
-**Browser will open to:** http://localhost:3000
+**Expected output:**
+```
+Compiled successfully!
+
+You can now view netmon-frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.x.x:3000
+```
+
+**Browser will open automatically to:** http://localhost:3000
 
 ---
 
-## Optional: Start Monitoring Probe
+## Verification
 
-If you want to run distributed probes (for actual monitoring):
+Once all services are running, verify:
 
-Open a **THIRD terminal**:
-```bash
-cd D:\netmon\backend
-go run cmd/probe/main.go
-```
+1. **Backend API:**
+   ```bash
+   curl http://localhost:8080/api/health
+   ```
+   Should return: `{"status":"ok"}`
 
-**What this does:**
-- Connects to central server
-- Executes monitoring jobs (ICMP, TCP, DNS, HTTP, etc.)
-- Sends measurements back to server
+2. **Frontend:**
+   Open http://localhost:3000 in your browser
+   You should see the NetMon dashboard
 
----
-
-## What You'll See
-
-### Frontend Dashboard (http://localhost:3000)
-- **Dashboard page** - Overview with metrics, live charts, status indicators
-- **Targets page** - List of monitored targets (hosts, routers, servers)
-- **Monitors page** - Active monitoring checks
-- **Tools page** - Network diagnostic tools (ping, traceroute, DNS lookup)
-- **Real-time updates** - WebSocket connection for live data
-
-### Backend API (http://localhost:8080)
-Available endpoints:
-- `GET /health` - Health check
-- `GET /api/v1/targets` - List targets
-- `GET /api/v1/monitors` - List monitors
-- `GET /api/v1/measurements` - Get measurement data
-- `POST /api/v1/targets` - Create new target
-- `POST /api/v1/monitors` - Create new monitor
+3. **Database:**
+   ```bash
+   docker exec -it netmon-postgres psql -U netmon -d netmon -c "\dt"
+   ```
+   Should list tables: probes, targets, monitors, measurements, incidents, alerts
 
 ---
 
-## Testing the System
+## Stopping Services
 
-### 1. Create a Test Target (Google DNS)
+### Quick Method (Windows):
 ```bash
-curl -X POST http://localhost:8080/api/v1/targets \
-  -H "Content-Type: application/json" \
-  -d "{\"name\":\"Google DNS\",\"target_type\":\"host\",\"address\":\"8.8.8.8\"}"
+stop-all.bat
 ```
 
-### 2. Create ICMP Monitor
-Get the target ID from step 1, then:
-```bash
-curl -X POST http://localhost:8080/api/v1/monitors \
-  -H "Content-Type: application/json" \
-  -d "{\"target_id\":\"<UUID-from-step-1>\",\"monitor_type\":\"icmp\",\"interval_seconds\":60,\"timeout_seconds\":10,\"config\":{\"count\":4}}"
-```
+### Manual Method:
 
-### 3. View in Dashboard
-- Open http://localhost:3000
-- Click "Targets" - you'll see "Google DNS"
-- Click on it to see detailed metrics
-- Wait 60 seconds for first measurement
+1. **Stop Frontend:** Press `Ctrl+C` in the frontend terminal
 
----
+2. **Stop Backend:** Press `Ctrl+C` in the backend terminal
 
-## Stopping the Application
+3. **Stop Docker containers:**
+   ```bash
+   docker-compose down
+   ```
 
-### Stop Frontend
-Press `Ctrl+C` in the frontend terminal
-
-### Stop Backend
-Press `Ctrl+C` in the backend terminal
-
-### Stop Database
-```bash
-cd D:\netmon
-docker-compose down
-```
-
-**To remove all data:**
-```bash
-docker-compose down -v
-```
+4. **To also remove data volumes:**
+   ```bash
+   docker-compose down -v
+   ```
+   ⚠️ Warning: This deletes all monitoring data!
 
 ---
 
 ## Troubleshooting
 
-### Port Already in Use
-**Error:** `bind: address already in use`
+### Problem: Docker VHDX "Access is denied" Error
 
-**Solution:**
+**Error:** `creating vhdx: getting VHDX metadata... Access is denied`
+
+This is the most common Docker Desktop error on Windows. The VHDX file is locked or corrupted.
+
+**Solution 1 - Quick Fix (Try this first):**
 ```bash
-# Windows - Find what's using port 8080
-netstat -ano | findstr :8080
+cd D:\netmon
 
-# Kill the process
-taskkill /PID <pid> /F
+# Right-click and "Run as Administrator"
+fix-docker.bat
 ```
 
-### Docker Not Running
-**Error:** `Cannot connect to Docker daemon`
+This will:
+- Stop Docker Desktop
+- Shutdown WSL
+- Fix file permissions on the VHDX file
+- Restart Docker Desktop
 
-**Solution:** Start Docker Desktop from Windows Start menu
+**Solution 2 - Complete Reset (if Solution 1 fails):**
+```bash
+cd D:\netmon
 
-### Database Connection Failed
-**Error:** `failed to connect to database`
+# Right-click and "Run as Administrator"  
+fix-docker-reset.bat
+```
+
+⚠️ **WARNING**: This deletes ALL Docker data (containers, images, volumes)
+
+This will:
+- Completely uninstall Docker WSL distributions
+- Delete all Docker data
+- Reset Docker Desktop to factory defaults
+- Restart fresh
+
+**Solution 3 - Manual Fix:**
+1. Close Docker Desktop completely
+2. Open PowerShell as Administrator
+3. Run:
+   ```powershell
+   wsl --shutdown
+   wsl --unregister docker-desktop
+   wsl --unregister docker-desktop-data
+   ```
+4. Delete: `C:\Users\YOUR_USERNAME\AppData\Local\Docker\wsl`
+5. Start Docker Desktop again
+
+---
+
+### Problem: "Docker is not running" or "cannot connect to Docker daemon"
+
+**Solution:**
+1. Open Docker Desktop application
+2. Wait until it says "Docker Desktop is running" (bottom-left corner)
+3. Run the start script again
+
+**Still not working?**
+```bash
+# Run diagnostic tool
+docker-diagnose.bat
+
+# Or restart Docker Desktop service (Windows)
+# 1. Open Services (Win + R, type "services.msc")
+# 2. Find "Docker Desktop Service"
+# 3. Right-click → Restart
+```
+
+---
+
+### Problem: Docker containers fail to start
 
 **Solution:**
 ```bash
-# Check if containers are running
+# Check what's wrong
+docker-compose logs
+
+# Stop and remove everything
+docker-compose down -v
+
+# Start fresh
+docker-compose up -d
+
+# Check status
 docker ps
-
-# View database logs
-docker-compose logs postgres
-
-# Restart database
-docker-compose restart postgres
 ```
 
-### Frontend Won't Start
-**Error:** `npm ERR!` or `Module not found`
+---
+
+### Problem: Backend fails with "failed to connect to database"
+
+**Solution:**
+```bash
+# Check if PostgreSQL is ready
+docker logs netmon-postgres
+
+# Wait a few more seconds, then try again
+# On first start, PostgreSQL takes 5-10 seconds to initialize
+```
+
+---
+
+### Problem: Port already in use (8080 or 3000)
+
+**Solution:**
+```bash
+# Find what's using the port
+netstat -ano | findstr :8080
+netstat -ano | findstr :3000
+
+# Kill the process (replace PID with actual process ID)
+taskkill /PID <PID> /F
+```
+
+---
+
+### Problem: Frontend "Module not found" errors
 
 **Solution:**
 ```bash
 cd D:\netmon\frontend
+
+# Clear cache and reinstall
 rm -rf node_modules package-lock.json
 npm install
 npm start
@@ -194,82 +325,87 @@ npm start
 
 ---
 
+### Problem: Database tables not created
+
+**Solution:**
+The backend automatically runs migrations on startup. If tables are missing:
+
+1. Check backend logs for migration errors
+2. Manually verify database:
+   ```bash
+   docker exec -it netmon-postgres psql -U netmon -d netmon
+   \dt
+   \q
+   ```
+3. If tables are missing, restart the backend - migrations run on every startup
+
+---
+
 ## Architecture Overview
 
 ```
-┌─────────────────────────────────────────┐
-│         Frontend (React)                │
-│         http://localhost:3000           │
-│  • Dashboard with real-time charts      │
-│  • WebSocket connection                 │
-└──────────────┬──────────────────────────┘
-               │ HTTP/WebSocket
-┌──────────────▼──────────────────────────┐
-│      Backend Server (Go)                │
-│      http://localhost:8080              │
-│  • REST API                             │
-│  • Monitoring Scheduler                 │
-│  • WebSocket Server                     │
-└──────────────┬──────────────────────────┘
-               │
-    ┌──────────┼──────────┐
-    │          │          │
-┌───▼────┐ ┌──▼─────┐ ┌──▼──────┐
-│Postgres│ │ Redis  │ │ Probes  │
-│+TimescaleDB│        │(optional)│
-└────────┘ └────────┘ └─────────┘
+┌─────────────────────────────────────────────────┐
+│  Frontend (React + TypeScript)                  │
+│  http://localhost:3000                          │
+└─────────────────┬───────────────────────────────┘
+                  │
+                  │ REST API
+                  ▼
+┌─────────────────────────────────────────────────┐
+│  Backend (Go)                                   │
+│  http://localhost:8080                          │
+│  - REST API Server (Gin)                        │
+│  - Monitoring Scheduler                         │
+│  - Database Migrations                          │
+└─────────────────┬───────────────────────────────┘
+                  │
+        ┌─────────┴──────────┐
+        ▼                    ▼
+┌─────────────┐      ┌─────────────┐
+│ PostgreSQL  │      │   Redis     │
+│ + TimescaleDB      │ Cache       │
+│ :5432       │      │ :6379       │
+└─────────────┘      └─────────────┘
 ```
 
 ---
 
-## Features Available
+## Default Credentials
 
-### 10 Monitor Types
-1. **ICMP** - Ping monitoring (packet loss, RTT, jitter)
-2. **TCP** - Port connectivity checks
-3. **DNS** - DNS resolution monitoring
-4. **HTTP/HTTPS** - Web endpoint monitoring
-5. **TLS** - Certificate expiry monitoring
-6. **Traceroute** - Network path analysis
-7. **MTR** - Combined ping + traceroute
-8. **SNMP** - Device monitoring via SNMP
-9. **VPN** - Tunnel status monitoring
-10. **BGP** - BGP session monitoring
+**PostgreSQL:**
+- Host: localhost
+- Port: 5432
+- Database: netmon
+- Username: netmon
+- Password: netmon_dev_password
 
-### 60+ Network Tools
-- Ping, Traceroute, MTR
-- DNS lookup (A, AAAA, MX, NS, TXT, SOA, PTR)
-- WHOIS, GeoIP, ASN lookup
-- Port scanner, SSL checker
-- Bandwidth test, packet capture
-- And many more...
-
-### 21 Metrics Collected
-- Packet loss, RTT (min/avg/max)
-- Jitter, TCP connect time
-- DNS resolution time
-- HTTP timing (DNS, connect, TLS, TTFB, total)
-- TLS certificate expiry days
-- Hop count, path changes
-- SNMP values
-- And more...
+**Redis:**
+- Host: localhost
+- Port: 6379
+- Password: (none)
 
 ---
 
 ## Next Steps
 
-1. **Start the app** (follow steps above)
-2. **Create targets** via UI or API
-3. **Set up monitors** for each target
-4. **View real-time data** in dashboard
-5. **Explore network tools** in Tools page
+1. **Access the Dashboard:** http://localhost:3000
+2. **Add Monitoring Targets:** Navigate to "Targets" → "Add Target"
+3. **Configure Probes:** Set up monitoring probes in "Probes" section
+4. **View Metrics:** Check Dashboard for real-time monitoring data
 
 ---
 
-## Support
+## Development Notes
 
-- **Documentation:** Check ARCHITECTURE.md, STATUS.md
-- **API Reference:** http://localhost:8080/api/v1/
-- **Logs:** Check terminal output or `docker-compose logs`
+- **Hot Reload:** Frontend auto-reloads on code changes
+- **Backend Changes:** Restart `go run cmd/server/main.go` to apply
+- **Database Changes:** Migrations run automatically on backend startup
+- **Data Persistence:** Docker volumes persist data between restarts
 
-Enjoy monitoring! 🚀
+---
+
+## Need Help?
+
+- Check the logs in each terminal window
+- Review troubleshooting section above
+- Ensure Docker Desktop is running before all else

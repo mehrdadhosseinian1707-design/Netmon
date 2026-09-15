@@ -1,0 +1,1060 @@
+# NetMon — Complete Capabilities Overview
+
+## 1. Distributed Monitoring Architecture
+
+* Central monitoring server for coordinating the entire platform
+* Distributed monitoring probes
+* Probe registration and authentication
+* Unique API key per probe
+* Probe health monitoring
+* Automatic heartbeat tracking
+* Probe online/offline detection
+* Multi-location monitoring
+* Monitoring across different networks, ISPs, datacenters, and geographic regions
+* Distributed execution of monitoring tasks
+* Horizontal probe scaling
+* Centralized collection of measurements from all probes
+* Per-probe target and monitor assignment
+* Probe status and health reporting
+
+## 2. Target & Monitor Management
+
+* Create, read, update, and delete monitoring targets
+* Create, read, update, and delete monitors
+* Monitor hosts, routers, switches, servers, databases, APIs, websites, DNS servers, network interfaces, ISPs, and arbitrary network endpoints
+* Multiple monitors per target
+* Configurable monitoring intervals
+* Configurable timeouts
+* Configurable packet sizes
+* Configurable packet counts
+* Configurable protocols
+* Per-monitor JSON configuration
+* Enable/disable individual monitors
+* Monitor execution from selected probes
+* Historical monitoring configuration
+
+## 3. Network Performance Monitoring
+
+* ICMP latency measurement
+* Minimum RTT
+* Average RTT
+* Maximum RTT
+* RTT standard deviation
+* Jitter measurement
+* Packet-loss measurement
+* IPv4 reachability
+* IPv6 reachability
+* TCP connection latency
+* TCP throughput
+* UDP throughput
+* Download bandwidth
+* Upload bandwidth
+* Network availability
+* Response-time monitoring
+* Network quality measurement
+* Performance baseline tracking
+* Performance degradation detection
+
+## 4. ICMP Monitoring
+
+* IPv4 ping
+* Configurable packet count
+* Configurable packet size
+* RTT measurement
+* Minimum/average/maximum latency
+* Standard deviation
+* Packet-loss percentage
+* Jitter calculation
+* Reachability testing
+* Network quality assessment
+* SLA latency monitoring
+* Support for privileged ICMP operation where required
+* Statistical analysis of RTT samples
+
+## 5. TCP Monitoring
+
+* TCP port connectivity testing
+* TCP connection establishment timing
+* DNS resolution timing
+* TCP throughput measurement
+* TCP retransmission detection where supported
+* Service availability monitoring
+* Database port monitoring
+* SSH port monitoring
+* HTTP/HTTPS port monitoring
+* Arbitrary TCP service monitoring
+* Application connectivity testing
+
+## 6. UDP Monitoring
+
+* UDP connectivity testing
+* UDP throughput measurement
+* UDP packet-loss measurement
+* UDP latency measurement
+* Acknowledged-packet latency tracking
+* Configurable packet size
+* Configurable packet count
+* VoIP quality monitoring
+* Video-streaming quality testing
+* Game-server performance testing
+* Real-time UDP service monitoring
+
+## 7. DNS Monitoring
+
+* DNS query execution
+* DNS resolution latency
+* DNS error detection
+* Resolver health monitoring
+* Resolver performance comparison
+* A-record queries
+* AAAA-record queries
+* MX-record queries
+* NS-record queries
+* TXT-record queries
+* SOA-record queries
+* PTR/reverse-DNS queries
+* DNS propagation verification
+* DNS service availability monitoring
+* DNS-based service discovery testing
+* Comparison of multiple DNS resolvers
+
+## 8. HTTP/HTTPS Monitoring
+
+* HTTP endpoint monitoring
+* HTTPS endpoint monitoring
+* DNS lookup timing
+* TCP connection timing
+* TLS handshake timing
+* HTTP Time to First Byte (TTFB)
+* Total HTTP request timing
+* HTTP status-code monitoring
+* Response-size measurement
+* Redirect tracking
+* Custom HTTP headers
+* Custom HTTP methods
+* HTTP API monitoring
+* TLS certificate validation
+* TLS certificate inspection
+* Certificate expiration tracking
+* TLS version detection
+* TLS cipher detection
+* HTTP vs HTTPS performance comparison
+* CDN performance analysis
+* Web-service availability monitoring
+
+## 9. Traceroute & Path Analysis
+
+* IPv4 traceroute
+* Hop-by-hop path discovery
+* Per-hop latency measurement
+* Hop count measurement
+* Route-path recording
+* Route-change detection
+* Historical route tracking
+* Path latency analysis
+* Network topology analysis
+* ISP routing analysis
+* MTU discovery
+* DF-bit-based MTU testing
+* Binary-search MTU detection
+* AS-path construction
+* Autonomous-system identification
+* Routing-path comparison between probes
+* Routing-path comparison between ISPs
+
+## 10. MTU Analysis
+
+* Path MTU discovery
+* Maximum transmission-unit detection
+* DF-bit testing
+* Fragmentation analysis
+* Binary-search MTU discovery
+* Detection of potential MTU-related connectivity problems
+* Path MTU comparison across ISPs and locations
+* Historical MTU tracking
+
+## 11. Routing & BGP Intelligence
+
+* AS-path tracking
+* Autonomous-system identification
+* Route-change detection
+* Historical route tracking
+* BGP prefix monitoring
+* BGP path analysis
+* Upstream-provider analysis
+* ISP routing comparison
+* Route instability detection
+* Routing anomaly detection
+* Route-leak monitoring
+* Route-hijacking detection potential
+* Integration with external BGP data sources
+* RIPE RIS integration
+* RouteViews integration
+* BGPStream integration
+* PyBGPStream support
+* BGP dump analysis
+
+## 12. SNMP Monitoring
+
+* SNMP device polling
+* OID-based metric collection
+* Router monitoring
+* Switch monitoring
+* Network-device health monitoring
+* Interface statistics collection
+* Device statistics collection
+* SNMP-based infrastructure monitoring
+* Per-device metric collection
+
+## 13. Network Interface Monitoring
+
+* Interface state monitoring
+* RX byte counters
+* TX byte counters
+* RX packet counters
+* TX packet counters
+* RX error tracking
+* TX error tracking
+* RX drop tracking
+* TX drop tracking
+* Interface utilization analysis
+* Link-speed monitoring
+* Hardware/interface health monitoring
+* Packet-loss root-cause analysis
+* Platform-specific interface statistics
+* Linux interface monitoring
+* Windows interface monitoring
+* macOS interface monitoring
+
+## 14. Bandwidth & Throughput Testing
+
+* Download-speed testing
+* Upload-speed testing
+* HTTP-based bandwidth tests
+* Configurable test duration
+* Configurable sample size
+* Single-direction testing
+* Bidirectional testing
+* TCP throughput testing
+* UDP throughput testing
+* ISP bandwidth comparison
+* Link-capacity testing
+* CDN performance testing
+* Bottleneck identification
+* Historical bandwidth tracking
+* Peak/off-peak bandwidth analysis
+
+## 15. Connectivity Monitoring
+
+* IPv4 connectivity testing
+* IPv6 connectivity testing
+* Protocol-specific latency measurement
+* Configurable connectivity endpoints
+* TCP connectivity testing
+* ICMP fallback
+* Dual-stack availability monitoring
+* IPv4 vs IPv6 performance comparison
+* Internet reachability monitoring
+* Resolver reachability testing
+* Connectivity failure detection
+
+## 16. Packet Capture & Traffic Analysis
+
+* Packet capture execution
+* tcpdump integration
+* tshark integration
+* dumpcap integration
+* Packet-level troubleshooting
+* Traffic inspection
+* Protocol analysis
+* Capture-based incident investigation
+* Capture execution through the tool subsystem
+* Context-aware command execution
+* Configurable execution timeout
+
+## 17. Network Diagnostic Tool Integration
+
+NetMon integrates with 60+ network-analysis utilities, including:
+
+### ICMP / Reachability
+
+* ping
+* ping6
+* fping
+* hping3
+* nping
+* arping
+* mtr
+
+### Traceroute / Path Analysis
+
+* traceroute
+* traceroute6
+* tracepath
+* mtr
+* paris-traceroute
+* dublin-traceroute
+* tcptraceroute
+* scamper
+
+### DNS
+
+* dig
+* drill
+* kdig
+* nslookup
+* dnsviz
+* resolvectl
+
+### HTTP / TLS
+
+* curl
+* wget
+* httping
+* xh
+* openssl s_client
+* gnutls-cli
+
+### TCP Connectivity
+
+* nc
+* ncat
+* telnet
+* hping3
+
+### Packet Analysis
+
+* hping3
+* nping
+* tcpdump
+* tshark
+* dumpcap
+
+### Throughput / Bandwidth
+
+* iperf3
+* speedtest-cli
+* fast-cli
+* curl
+* wget
+
+### Traffic Monitoring
+
+* iftop
+* nload
+* bmon
+* vnstat
+* ip -s link
+* ethtool
+* ss
+* conntrack
+
+### BGP / Routing
+
+* bgpdump
+* pybgpstream
+* BGPStream
+* RouteViews
+* RIPE RIS
+
+### Advanced Measurement
+
+* owamp
+* twamp
+* RIPE Atlas
+* scamper
+
+## 18. Tool Execution Framework
+
+* Automatic tool detection
+* Installed-tool discovery
+* Missing-tool detection
+* Tool dependency checking
+* Tool categorization
+* Tool metadata
+* Structured command execution
+* Structured output parsing
+* Raw output conversion into Go structures
+* JSON serialization
+* REST API execution
+* CLI execution
+* Context cancellation
+* Execution timeouts
+* Installation-command generation
+* Installation-script generation
+* Per-tool information
+* Tool availability reporting
+* Tool-category filtering
+* Tool-specific shortcuts
+
+## 19. Real-Time Monitoring
+
+* WebSocket server
+* Real-time measurement streaming
+* Live dashboard updates
+* Real-time alert events
+* Real-time incident events
+* Real-time probe-status updates
+* Push-based measurement delivery
+* Live monitoring state
+* Live infrastructure status
+
+## 20. Time-Series Data Storage
+
+* PostgreSQL database
+* TimescaleDB integration
+* Hypertable-based measurement storage
+* Time-optimized queries
+* High-frequency measurement storage
+* Large-scale historical datasets
+* Millions of measurements
+* Automatic compression
+* Automatic retention policies
+* 30-day raw-data retention
+* Compression of older data
+* Continuous aggregates
+* Fast time-range queries
+
+## 21. Continuous Aggregation
+
+### 1-Minute Aggregates
+
+* Average latency
+* Minimum latency
+* Maximum latency
+* Packet loss
+* Availability
+* Aggregated monitoring metrics
+
+### 1-Hour Aggregates
+
+* Hourly performance statistics
+* Historical trends
+* Performance baselines
+
+### 1-Day Aggregates
+
+* Daily summaries
+* Long-term trends
+* Capacity-planning data
+* Historical performance analysis
+
+## 22. Statistical Analysis
+
+* Minimum values
+* Maximum values
+* Average values
+* Standard deviation
+* Percentile analysis
+* Time-series analysis
+* Trend analysis
+* Performance baselines
+* Historical comparisons
+* Availability calculations
+* SLA calculations
+* Anomaly-detection foundation
+
+## 23. Alerting Engine
+
+* Automatic alert generation
+* Threshold-based alerts
+* Availability alerts
+* Latency alerts
+* Packet-loss alerts
+* Performance degradation alerts
+* Service-down alerts
+* Certificate-expiration alerts
+* Route-change alerts
+* Network-quality alerts
+* Severity levels
+* Info alerts
+* Warning alerts
+* Critical alerts
+* Active/resolved alert states
+* Alert occurrence counting
+* First-occurrence tracking
+* Last-occurrence tracking
+* Alert lifecycle management
+
+## 24. Incident Management
+
+* Incident creation
+* Alert-to-incident association
+* Multi-alert incidents
+* Multi-target incidents
+* Multi-probe incidents
+* Incident start time
+* Incident resolution time
+* Incident timeline
+* Incident status
+* Root-cause documentation
+* Historical incident tracking
+* Correlated network events
+
+## 25. Availability & SLA Monitoring
+
+* Uptime percentage
+* Downtime tracking
+* Availability percentage
+* Per-target availability
+* Per-monitor availability
+* Per-probe availability
+* IPv4 availability
+* IPv6 availability
+* SLA threshold monitoring
+* SLA compliance calculation
+* Latency SLA monitoring
+* Packet-loss SLA monitoring
+* Response-time SLA monitoring
+* Historical SLA reporting
+* SLA violation tracking
+* Violation counts
+
+## 26. ISP Performance Intelligence
+
+* Multi-ISP monitoring
+* Simultaneous ISP comparison
+* Latency comparison
+* Packet-loss comparison
+* Jitter comparison
+* Download-speed comparison
+* Upload-speed comparison
+* TCP-throughput comparison
+* UDP-throughput comparison
+* DNS performance comparison
+* HTTP performance comparison
+* TLS performance comparison
+* Route-path comparison
+* Hop-count comparison
+* MTU comparison
+* AS-path comparison
+* IPv4 vs IPv6 comparison
+* Peak vs off-peak comparison
+* Route-stability comparison
+* ISP reliability scoring foundation
+* ISP performance history
+* ISP outage detection
+* ISP degradation detection
+
+## 27. Multi-Location Intelligence
+
+* Geographic monitoring
+* Regional performance comparison
+* Probe-to-probe latency comparison
+* Location-specific availability
+* Location-specific ISP performance
+* CDN performance comparison
+* Datacenter monitoring
+* Disaster-recovery verification
+* Regional outage detection
+* Network-path comparison between locations
+
+## 28. Application Performance Monitoring
+
+* Website monitoring
+* API monitoring
+* Web-service availability
+* DNS performance
+* TCP service availability
+* Database connectivity
+* HTTP response-time monitoring
+* TTFB monitoring
+* TLS performance monitoring
+* Certificate monitoring
+* Application endpoint comparison
+* API status-code monitoring
+
+## 29. Network Troubleshooting
+
+* Ping diagnostics
+* MTR diagnostics
+* Traceroute diagnostics
+* MTU diagnostics
+* DNS diagnostics
+* TCP diagnostics
+* UDP diagnostics
+* HTTP diagnostics
+* TLS diagnostics
+* Packet capture
+* Interface-error analysis
+* Interface-drop analysis
+* Route analysis
+* AS-path analysis
+* Connectivity diagnostics
+* ISP path troubleshooting
+* IPv4/IPv6 troubleshooting
+* Historical incident investigation
+
+## 30. Capacity Planning
+
+* Interface utilization tracking
+* Bandwidth utilization tracking
+* Traffic-volume monitoring
+* Download/upload trend analysis
+* Network growth analysis
+* Peak-usage identification
+* Off-peak analysis
+* Historical traffic patterns
+* Capacity trend analysis
+* Bottleneck identification
+* Long-term performance baselines
+
+## 31. REST API
+
+### Target API
+
+* `POST /api/targets`
+* `GET /api/targets`
+* `GET /api/targets/:id`
+* `PUT /api/targets/:id`
+* `DELETE /api/targets/:id`
+
+### Monitor API
+
+* `POST /api/monitors`
+* `GET /api/monitors`
+* `GET /api/monitors/:id`
+* `PUT /api/monitors/:id`
+* `DELETE /api/monitors/:id`
+
+### Measurement API
+
+* `GET /api/measurements`
+* `GET /api/measurements/latest`
+* `GET /api/measurements/stats`
+* `GET /api/measurements/availability`
+
+### Probe API
+
+* `POST /api/probes`
+* `GET /api/probes`
+* `GET /api/probes/:id`
+* `PUT /api/probes/:id`
+
+### Tool API
+
+* `GET /api/tools`
+* `GET /api/tools/installed`
+* `GET /api/tools/dependencies`
+* `GET /api/tools/:name`
+* `POST /api/tools/:name/execute`
+* `GET /api/tools/categories/:category`
+
+### Diagnostic Shortcuts
+
+* `POST /api/tools/ping`
+* `POST /api/tools/traceroute`
+* `POST /api/tools/dns`
+
+### Alert API
+
+* `GET /api/alerts`
+* `GET /api/alerts/:id`
+* `PUT /api/alerts/:id`
+
+### Incident API
+
+* `GET /api/incidents`
+
+## 32. WebSocket API
+
+* Real-time measurements
+* Live alerts
+* Incident updates
+* Probe status updates
+* Dashboard data streaming
+* Event-driven frontend updates
+
+## 33. Database Schema
+
+* Users
+* Probes
+* Targets
+* Monitors
+* Measurements
+* Alerts
+* Incidents
+* Traceroutes
+* Route history
+* Bandwidth tests
+* ASNs
+* ISPs
+* Audit logs
+
+## 34. Database & Data Lifecycle
+
+* Version-controlled migrations
+* Up migrations
+* Down migrations
+* Safe schema evolution
+* Hypertables
+* Time-based partitioning
+* Compression
+* Retention policies
+* Continuous aggregates
+* Historical data storage
+* Optimized time-range queries
+* Automated cleanup of expired raw data
+
+## 35. Authentication & Security
+
+* Probe API-key authentication
+* Unique probe credentials
+* Probe identity verification
+* User database
+* Audit logging
+* User-action tracking
+* Resource modification tracking
+* Before/after value recording
+* Source-IP recording
+* Success/failure recording
+
+### Planned Security Layer
+
+* JWT authentication
+* Session management
+* Role-Based Access Control
+* User authorization
+* Permission management
+
+## 36. Audit System
+
+* User-action auditing
+* Configuration-change auditing
+* Resource creation tracking
+* Resource modification tracking
+* Resource deletion tracking
+* Before/after state recording
+* Source-IP recording
+* Operation result recording
+* Security and compliance history
+
+## 37. Deployment
+
+* Docker support
+* Docker Compose deployment
+* Multi-container architecture
+* Central server container
+* Database container
+* Redis container
+* Probe container
+* Persistent volumes
+* Environment-based configuration
+* Containerized deployment
+* Production-oriented service separation
+
+## 38. Redis Integration
+
+* Redis-backed infrastructure
+* Distributed coordination support
+* Event/state infrastructure
+* Scalable backend architecture
+* Support for distributed monitoring workloads
+
+## 39. Configuration Management
+
+* Environment variables
+* Configuration files
+* Per-monitor configuration
+* JSON monitor configuration
+* Configurable intervals
+* Configurable timeouts
+* Configurable packet sizes
+* Configurable packet counts
+* Configurable endpoints
+* Configurable test duration
+* Flexible deployment configuration
+
+## 40. Migration System
+
+* Dedicated migration CLI
+* Version-controlled migrations
+* Apply migrations
+* Roll back migrations
+* Safe database schema evolution
+
+## 41. CLI
+
+### Server
+
+```bash
+go run cmd/server/main.go
+```
+
+Starts the central monitoring server and exposes the API/WebSocket services.
+
+### Probe
+
+```bash
+go run cmd/probe/main.go
+```
+
+Starts a monitoring probe, registers it with the central server, executes monitoring tasks, and reports measurements.
+
+### Migration
+
+```bash
+go run cmd/migrate/main.go up
+go run cmd/migrate/main.go down
+```
+
+Applies or rolls back database migrations.
+
+### Tool Management
+
+```bash
+go run cmd/tools/main.go list
+go run cmd/tools/main.go list --installed
+go run cmd/tools/main.go list --category icmp
+go run cmd/tools/main.go check
+go run cmd/tools/main.go install --generate --script x.sh
+go run cmd/tools/main.go execute --tool mtr google.com
+go run cmd/tools/main.go info --tool traceroute
+```
+
+Provides tool discovery, dependency checking, installation-script generation, execution, filtering, and tool information.
+
+## 42. Frontend / Dashboard
+
+### Current Foundation
+
+* React-based frontend
+* TypeScript
+* Recharts
+* Axios
+* REST API integration
+* WebSocket integration foundation
+
+### Dashboard Capabilities to Implement
+
+* Real-time network charts
+* Target overview
+* Monitor overview
+* Probe status dashboard
+* ISP comparison dashboards
+* Latency charts
+* Packet-loss charts
+* Jitter charts
+* Bandwidth charts
+* DNS performance charts
+* HTTP performance charts
+* Route visualization
+* AS-path visualization
+* MTU information
+* Interface statistics
+* Alert dashboard
+* Incident dashboard
+* SLA dashboard
+* Historical trend dashboards
+* Tool execution interface
+* Network diagnostic interface
+
+## 43. Historical Query & Analytics Capabilities
+
+NetMon can support queries such as:
+
+* Historical latency at a specific time
+* Historical packet loss
+* Historical jitter
+* Historical bandwidth
+* Historical DNS performance
+* Historical HTTP performance
+* Historical availability
+* Historical route paths
+* Historical route changes
+* Historical MTU
+* Historical AS paths
+* Historical interface errors
+* Historical interface drops
+* Historical ISP performance
+* Historical IPv4 vs IPv6 performance
+* Historical DNS resolver performance
+* Historical SLA compliance
+* Historical incidents
+* Historical outages
+
+## 44. Comparative Analysis
+
+* ISP vs ISP
+* Probe vs probe
+* Location vs location
+* Target vs target
+* IPv4 vs IPv6
+* DNS resolver vs DNS resolver
+* HTTP vs HTTPS
+* TCP vs UDP
+* Peak vs off-peak
+* Current vs historical
+* Current performance vs baseline
+* Multiple network paths
+* Multiple autonomous systems
+* Multiple monitoring locations
+
+## 45. Network Quality Analysis
+
+* Latency
+* Packet loss
+* Jitter
+* Throughput
+* TCP retransmissions
+* RX/TX errors
+* RX/TX drops
+* DNS latency
+* TCP connect time
+* TLS handshake time
+* HTTP TTFB
+* HTTP total time
+* Hop count
+* MTU
+* Route stability
+* AS-path changes
+* IPv4 connectivity
+* IPv6 connectivity
+
+## 46. Core Measurement Set
+
+NetMon's core measurement model covers:
+
+1. Latency
+2. Packet loss
+3. Jitter
+4. Download speed
+5. Upload speed
+6. TCP throughput
+7. UDP throughput
+8. DNS latency
+9. TCP connect time
+10. TLS handshake time
+11. HTTP TTFB
+12. HTTP total time
+13. MTU
+14. Hop count
+15. Route changes
+16. AS path
+17. TCP retransmissions
+18. RX/TX errors
+19. RX/TX drops
+20. IPv4 connectivity
+21. IPv6 connectivity
+
+## 47. Scalability
+
+* Distributed probe architecture
+* Horizontal probe scaling
+* Large numbers of targets
+* Large numbers of monitors
+* High-frequency monitoring
+* Monitoring intervals down to approximately one second
+* Millions of time-series measurements
+* TimescaleDB optimization
+* Distributed workload execution
+* Centralized aggregation
+* Multi-location expansion
+
+## 48. Primary Operational Use Cases
+
+* ISP performance monitoring
+* Multi-ISP comparison
+* Internet-quality monitoring
+* Network infrastructure monitoring
+* Router monitoring
+* Switch monitoring
+* Server monitoring
+* Website monitoring
+* API monitoring
+* Database connectivity monitoring
+* DNS monitoring
+* CDN monitoring
+* Network troubleshooting
+* Route analysis
+* BGP monitoring
+* SLA monitoring
+* Capacity planning
+* VoIP quality monitoring
+* Video-quality monitoring
+* Multi-datacenter monitoring
+* Disaster-recovery monitoring
+* Regional outage detection
+* Network-performance research
+
+## 49. Current Implementation Status
+
+### Implemented
+
+* Distributed probe architecture
+* Central monitoring server
+* Probe registration
+* Probe authentication
+* Heartbeat tracking
+* PostgreSQL
+* TimescaleDB
+* Time-series measurements
+* Hypertables
+* Compression
+* Retention policies
+* Continuous aggregates
+* REST API
+* WebSocket infrastructure
+* 10 native monitor types
+* 21 core metrics
+* 60+ network-analysis tool integrations
+* Tool discovery
+* Dependency detection
+* Tool execution
+* Target CRUD
+* Monitor CRUD
+* Probe CRUD
+* Measurement queries
+* Availability calculations
+* Alert generation
+* Basic incident management
+* Database migrations
+* Docker Compose deployment
+* CLI tools
+
+### Remaining / Enhancement Work
+
+* Complete production frontend/dashboard
+* Real-time visualization layer
+* Email notifications
+* Slack notifications
+* Webhook notifications
+* Automatic alert correlation
+* Advanced incident correlation
+* Priority-based scheduler
+* Scheduler rate limiting
+* JWT authentication
+* Session management
+* RBAC
+* Platform-specific TCP retransmission collection
+* Platform-specific interface statistics
+* Full external BGP API integration
+* Advanced anomaly detection
+* Advanced ISP scoring
+* Advanced reporting
+* Production hardening
+* Comprehensive automated testing
+* Observability for NetMon itself
+
+## 50. Overall Platform Capability
+
+NetMon is designed as a **distributed network intelligence and monitoring platform** capable of:
+
+* Monitoring infrastructure from multiple locations
+* Measuring network performance at protocol level
+* Comparing ISPs, routes, protocols, resolvers, and locations
+* Diagnosing connectivity and routing problems
+* Tracking network paths and autonomous systems
+* Measuring bandwidth and throughput
+* Monitoring DNS, TCP, UDP, HTTP, HTTPS, and TLS
+* Monitoring routers, switches, servers, and interfaces
+* Executing industry-standard network-analysis tools
+* Storing large volumes of historical time-series data
+* Detecting performance degradation and outages
+* Generating alerts and tracking incidents
+* Calculating uptime and SLA compliance
+* Streaming measurements in real time
+* Providing REST and WebSocket APIs
+* Supporting distributed probe deployment
+* Performing historical and comparative network analysis
+* Providing the foundation for ISP-quality intelligence, network observability, and large-scale infrastructure monitoring

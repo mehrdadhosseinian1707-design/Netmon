@@ -11,6 +11,7 @@ import (
 
 	"github.com/netmon/netmon/internal/api"
 	"github.com/netmon/netmon/internal/config"
+	"github.com/netmon/netmon/internal/migrations"
 	"github.com/netmon/netmon/internal/monitors"
 	"github.com/netmon/netmon/internal/scheduler"
 	"github.com/netmon/netmon/internal/store"
@@ -27,7 +28,11 @@ func main() {
 	defer logger.Sync()
 
 	// Load configuration
-	cfg, err := config.Load("")
+	configPath := os.Getenv("CONFIG_PATH")
+	if configPath == "" {
+		configPath = "config.yaml"
+	}
+	cfg, err := config.Load(configPath)
 	if err != nil {
 		logger.Fatal("Failed to load config", zap.Error(err))
 	}
@@ -44,6 +49,13 @@ func main() {
 	defer db.Close()
 
 	logger.Info("connected to database")
+
+	// Run database migrations
+	logger.Info("running database migrations")
+	if err := migrations.RunMigrations(db.DB()); err != nil {
+		logger.Fatal("Failed to run migrations", zap.Error(err))
+	}
+	logger.Info("migrations completed successfully")
 
 	// Initialize monitor factory
 	monitorFactory := monitors.NewMonitorFactory()

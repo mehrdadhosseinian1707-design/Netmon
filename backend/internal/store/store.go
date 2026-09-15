@@ -33,6 +33,10 @@ func (s *Store) Close() error {
 	return s.db.Close()
 }
 
+func (s *Store) DB() *sql.DB {
+	return s.db
+}
+
 // Probe operations
 func (s *Store) CreateProbe(ctx context.Context, probe *models.Probe) error {
 	metadata, err := json.Marshal(probe.Metadata)

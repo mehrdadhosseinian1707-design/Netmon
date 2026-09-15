@@ -1,0 +1,132 @@
+/* NMS Page - NOC System Style */
+.nms-page {
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Devices Grid */
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.device-card {
+  padding: 24px;
+}
+
+.device-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.device-ip {
+  font-size: 13px;
+  color: var(--info);
+  font-family: 'Fira Code', monospace;
+}
+
+.status-indicator {
+  font-size: 24px;
+}
+
+.device-type-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(79, 124, 255, 0.1);
+  border-radius: 6px;
+  color: var(--accent-primary);
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.device-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.metric-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.progress-bar {
+  width: 120px;
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--purple));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.device-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.device-actions .action-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.device-actions .action-btn:hover {
+  border-color: var(--accent-primary);
+  background: rgba(79, 124, 255, 0.1);
+  color: var(--accent-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .devices-grid {
+    grid-template-columns: 1fr;
+  }
+}

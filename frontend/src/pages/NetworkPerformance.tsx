@@ -153,8 +153,7 @@ export const NetworkPerformance = () => {
     }, 60000); // Check every minute
 
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [runSpeedTest]);
 
   const getSpeedClass = (speed: number, type: 'download' | 'upload') => {
     const threshold = type === 'download' ? { good: 50, fair: 25 } : { good: 20, fair: 10 };
